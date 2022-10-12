@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Button } from 'react-native';
 import GoalInput from './components/GoalInput';
 import GoalItem from './components/GoalItem';
 
@@ -11,7 +11,12 @@ import GoalItem from './components/GoalItem';
  */
 
 export default function App() {
+  const [modalOpen, setModalOpen] = useState(false);
   const [goals, setGoals] = useState([]);
+
+  const toggleModalHandler = () => {
+    setModalOpen((prev) => !prev);
+  };
 
   const addGoalHandler = (goal) => {
     setGoals((prev) => [{ text: goal, id: Math.random().toString() }, ...prev]);
@@ -23,7 +28,17 @@ export default function App() {
 
   return (
     <View style={styles.appContainer}>
-      <GoalInput onAddGoal={addGoalHandler} />
+      <Button
+        title="Add New Goal"
+        color="#5e0acc"
+        onPress={toggleModalHandler}
+      />
+
+      <GoalInput
+        onAddGoal={addGoalHandler}
+        visible={modalOpen}
+        onGoalAdded={toggleModalHandler}
+      />
 
       {/* 
       ScrollView

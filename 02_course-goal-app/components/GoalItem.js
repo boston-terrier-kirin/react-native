@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   goalText: {
     color: '#fff',
-    padding: 8,
+    padding: 16,
   },
   pressedItem: {
     opacity: 0.5,

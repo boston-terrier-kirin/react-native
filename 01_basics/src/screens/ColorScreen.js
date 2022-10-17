@@ -10,7 +10,7 @@ const ColorScreen = () => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Button title="Add a Color" onPress={onAddColor} />
       <FlatList
         data={colors}
@@ -29,6 +29,7 @@ const ColorScreen = () => {
             </View>
           );
         }}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
@@ -45,6 +46,7 @@ const randomRgb = () => {
 export default ColorScreen;
 
 const styles = StyleSheet.create({
+  container: { alignItems: 'center', width: '100%' },
   box: {
     flexDirection: 'column',
     justifyContent: 'center',

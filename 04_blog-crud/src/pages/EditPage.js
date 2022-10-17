@@ -3,18 +3,21 @@ import { StyleSheet } from 'react-native';
 import { Context as BlogContext } from '../context/BlogContext';
 import BlogPostForm from '../components/BlogPostForm';
 
-const CreatePage = ({ navigation }) => {
-  const { addBlogPost } = useContext(BlogContext);
+const EditPage = ({ navigation }) => {
+  const id = navigation.getParam('id');
+  const { state, editBlogPost } = useContext(BlogContext);
+  const blogPost = state.find((blog) => blog.id === id);
 
   return (
     <BlogPostForm
+      initialValues={blogPost}
       onSubmit={(title, content) => {
-        addBlogPost(title, content, () => navigation.navigate('Index'));
+        editBlogPost(id, title, content, () => navigation.pop());
       }}
     />
   );
 };
 
-export default CreatePage;
+export default EditPage;
 
 const styles = StyleSheet.create({});

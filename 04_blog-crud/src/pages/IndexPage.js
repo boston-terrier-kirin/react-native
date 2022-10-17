@@ -1,23 +1,15 @@
 import { useContext } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  Button,
-  Pressable,
-} from 'react-native';
+import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native';
 import { Context as BlogContext } from '../context/BlogContext';
 
 // https://icons.expo.fyi/
 import { Feather } from '@expo/vector-icons';
 
 const IndexPage = ({ navigation }) => {
-  const { state, addBlogPost, deleteBlogPost } = useContext(BlogContext);
+  const { state, deleteBlogPost } = useContext(BlogContext);
 
   return (
-    <View>
-      <Button title="Add Post" onPress={() => addBlogPost()} />
+    <View style={styles.container}>
       <FlatList
         data={state}
         keyExtractor={(item) => item.id}
@@ -53,18 +45,26 @@ IndexPage.navigationOptions = ({ navigation }) => {
 export default IndexPage;
 
 const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 20,
     paddingHorizontal: 10,
-    borderTopWidth: 1,
-    borderColor: 'gray',
+    borderWidth: 1,
+    borderColor: '#bfdbfe',
+    borderRadius: 5,
+    backgroundColor: '#eff6ff',
+    marginBottom: 8,
   },
   title: {
     fontSize: 18,
+    color: '#4b5563',
   },
   icon: {
     fontSize: 24,
+    color: '#4b5563',
   },
 });

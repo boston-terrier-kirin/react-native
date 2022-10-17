@@ -12,6 +12,7 @@ const EditPage = ({ navigation }) => {
     <BlogPostForm
       initialValues={blogPost}
       onSubmit={(title, content) => {
+        // POINT：popで1つ前に戻る。
         editBlogPost(id, title, content, () => navigation.pop());
       }}
     />

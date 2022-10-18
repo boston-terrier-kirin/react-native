@@ -15,6 +15,12 @@ const CreatePage = ({ navigation }) => {
   );
 };
 
+CreatePage.navigationOptions = () => {
+  return {
+    title: `Create New Blog Post`,
+  };
+};
+
 export default CreatePage;
 
 const styles = StyleSheet.create({});

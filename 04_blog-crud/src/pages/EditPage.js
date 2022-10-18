@@ -19,6 +19,12 @@ const EditPage = ({ navigation }) => {
   );
 };
 
+EditPage.navigationOptions = () => {
+  return {
+    title: `Edit Blog Post`,
+  };
+};
+
 export default EditPage;
 
 const styles = StyleSheet.create({});

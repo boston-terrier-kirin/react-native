@@ -1,0 +1,11 @@
+https://dashboard.ngrok.com/get-started/setup
+
+Githubでログイン。
+
+ngrok.exe をダウンロード。ngrok.exeはインストーラーではなく、コマンド。
+
+ngrok config add-authtoken {authtoken}
+
+起動のたびにurlが変わるので、jsonServer.jsを修正する。
+
+

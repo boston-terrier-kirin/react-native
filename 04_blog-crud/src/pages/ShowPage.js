@@ -20,6 +20,7 @@ ShowPage.navigationOptions = ({ navigation }) => {
   const id = navigation.getParam('id');
 
   return {
+    title: `Blog Post #${id}`,
     headerRight: () => (
       <Pressable onPress={() => navigation.navigate('Edit', { id })}>
         <MaterialIcons

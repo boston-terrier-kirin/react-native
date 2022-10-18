@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native';
 import { Context as BlogContext } from '../context/BlogContext';
 
@@ -6,7 +6,20 @@ import { Context as BlogContext } from '../context/BlogContext';
 import { Feather } from '@expo/vector-icons';
 
 const IndexPage = ({ navigation }) => {
-  const { state, deleteBlogPost } = useContext(BlogContext);
+  const { state, getBlogPosts, deleteBlogPost } = useContext(BlogContext);
+
+  useEffect(() => {
+    getBlogPosts();
+
+    // POINT：画面とバックエンドをどう同期するか？
+    const listener = navigation.addListener('didFocus', () => {
+      getBlogPosts();
+    });
+
+    return () => {
+      listener.remove();
+    };
+  }, []);
 
   return (
     <View style={styles.container}>

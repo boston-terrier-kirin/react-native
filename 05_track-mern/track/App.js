@@ -1,20 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import { Provider as AuthProvider } from './src/context/AuthContext';
+import SigninPage from './src/pages/SigninPage';
+import SignupPage from './src/pages/SignupPage';
+import AccountPage from './src/pages/AccountPage';
+import TrackCreatePage from './src/pages/TrackCreatePage';
+import TrackListPage from './src/pages/TrackListPage';
+import TrackDetailPage from './src/pages/TrackDetailPage';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+import { setNavigator } from './src/navigationRef';
+
+const switchNavigator = createSwitchNavigator({
+  authFlow: createStackNavigator({
+    Signup: SignupPage,
+    Signin: SigninPage,
+  }),
+  mainFlow: createBottomTabNavigator({
+    trackListFlow: createStackNavigator({
+      TrackList: TrackListPage,
+      TrackDetail: TrackDetailPage,
+    }),
+    TrackCreate: TrackCreatePage,
+    Account: AccountPage,
+  }),
 });
+
+const App = createAppContainer(switchNavigator);
+
+export default () => (
+  <AuthProvider>
+    {/* POINT：コンポーネントの外でnavigationを使う */}
+    <App ref={(navigator) => setNavigator(navigator)} />
+  </AuthProvider>
+);

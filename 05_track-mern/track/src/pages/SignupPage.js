@@ -1,55 +1,28 @@
-import { useState, useContext } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
-import { Text, Input, Button } from '@rneui/themed';
+import { useContext } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { NavigationEvents } from 'react-navigation';
 import { Context as AuthContext } from '../context/AuthContext';
-import { basicStyle, errorStyle } from '../components/Styles';
+import AuthForm from '../components/AuthForm';
+import NavLink from '../components/NavLink';
+import { basicStyle } from '../components/Styles';
 
-const SignupPage = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const { state, signup } = useContext(AuthContext);
+const SignupPage = () => {
+  const { state, signup, clearErrorMessage } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
-      <Text h3 style={basicStyle.mb2}>
-        Sign Up for Tracker
-      </Text>
+      <NavigationEvents onWillFocus={clearErrorMessage} />
+      <AuthForm
+        headerText="Sign Up for Tracker"
+        submitButtonText="Sign Up"
+        onSubmit={({ email, password }) => signup({ email, password })}
+        errorMessage={state.errorMessage}
+      />
 
-      {state.errorMessage && (
-        <Text style={errorStyle}>{state.errorMessage}</Text>
-      )}
-
-      <View style={basicStyle.mb1}>
-        <Input
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-      </View>
-
-      <View style={basicStyle.mb1}>
-        <Input
-          placeholder="Password"
-          secureTextEntry
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-      </View>
-
-      <View style={basicStyle.mb2}>
-        <Button title="Sign Up" onPress={() => signup({ email, password })} />
-      </View>
-
-      <Pressable onPress={() => navigation.navigate('Signin')}>
-        <Text style={styles.link}>
-          Already have an account? Sign in instead.
-        </Text>
-      </Pressable>
+      <NavLink
+        title="Already have an account? Sign in instead."
+        navigateTo="Signin"
+      />
     </View>
   );
 };
@@ -68,10 +41,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 200,
     ...basicStyle.p1,
-  },
-  link: {
-    fontSize: 16,
-    color: '#3b82f6',
-    textAlign: 'center',
   },
 });

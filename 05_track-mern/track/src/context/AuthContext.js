@@ -10,7 +10,7 @@ const initialState = {
 
 const authReducer = (state, action) => {
   switch (action.type) {
-    case 'SIGNUP':
+    case 'SIGNIN':
       return {
         ...state,
         token: action.payload,
@@ -20,6 +20,11 @@ const authReducer = (state, action) => {
       return {
         ...state,
         errorMessage: action.payload,
+      };
+    case 'CLEAR_ERROR_MESSAGE':
+      return {
+        ...state,
+        errorMessage: '',
       };
     default:
       return state;
@@ -33,7 +38,7 @@ const signup = (dispatch) => {
       await AsyncStorage.setItem('token', res.data.token);
 
       dispatch({
-        type: 'SIGNUP',
+        type: 'SIGNIN',
         payload: res.data.token,
       });
 
@@ -49,7 +54,31 @@ const signup = (dispatch) => {
 };
 
 const signin = (dispatch) => {
-  return ({ email, password }) => {};
+  return async ({ email, password }) => {
+    try {
+      const res = await trackerApi.post('/signin', { email, password });
+      await AsyncStorage.setItem('token', res.data.token);
+
+      dispatch({
+        type: 'SIGNIN',
+        payload: res.data.token,
+      });
+
+      // POINT：コンポーネントの外でnavigationを使う
+      navigate('TrackList');
+    } catch (err) {
+      dispatch({
+        type: 'ADD_ERROR',
+        payload: 'Something went wrong with sign in',
+      });
+    }
+  };
+};
+
+const clearErrorMessage = (dispatch) => {
+  return () => {
+    dispatch({ type: 'CLEAR_ERROR_MESSAGE' });
+  };
 };
 
 const signout = (dispatch) => {
@@ -58,6 +87,6 @@ const signout = (dispatch) => {
 
 export const { Context, Provider } = createDataContext(
   authReducer,
-  { signup, signin, signout },
+  { signup, signin, signout, clearErrorMessage },
   initialState
 );

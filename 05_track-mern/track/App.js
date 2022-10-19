@@ -3,6 +3,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
+import ResolveAuthPage from './src/pages/ResolveAuthPage';
 import SigninPage from './src/pages/SigninPage';
 import SignupPage from './src/pages/SignupPage';
 import AccountPage from './src/pages/AccountPage';
@@ -13,6 +14,7 @@ import TrackDetailPage from './src/pages/TrackDetailPage';
 import { setNavigator } from './src/navigationRef';
 
 const switchNavigator = createSwitchNavigator({
+  resolveAuth: ResolveAuthPage,
   authFlow: createStackNavigator({
     Signup: SignupPage,
     Signin: SigninPage,

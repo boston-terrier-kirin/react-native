@@ -16,6 +16,12 @@ const authReducer = (state, action) => {
         token: action.payload,
         errorMessage: '',
       };
+    case 'SIGNOUT':
+      return {
+        ...state,
+        token: null,
+        errorMessage: '',
+      };
     case 'ADD_ERROR':
       return {
         ...state,
@@ -29,6 +35,21 @@ const authReducer = (state, action) => {
     default:
       return state;
   }
+};
+
+const tryLocalSignin = (dispatch) => {
+  return async () => {
+    const token = await AsyncStorage.getItem('token');
+
+    if (token) {
+      dispatch({ type: 'SIGNIN', payload: token });
+
+      // POINT：コンポーネントの外でnavigationを使う
+      navigate('TrackList');
+    } else {
+      navigate('Signup');
+    }
+  };
 };
 
 const signup = (dispatch) => {
@@ -82,11 +103,17 @@ const clearErrorMessage = (dispatch) => {
 };
 
 const signout = (dispatch) => {
-  return () => {};
+  return async () => {
+    await AsyncStorage.removeItem('token');
+
+    dispatch({ type: 'SIGNOUT' });
+
+    navigate('Signin');
+  };
 };
 
 export const { Context, Provider } = createDataContext(
   authReducer,
-  { signup, signin, signout, clearErrorMessage },
+  { tryLocalSignin, signup, signin, signout, clearErrorMessage },
   initialState
 );

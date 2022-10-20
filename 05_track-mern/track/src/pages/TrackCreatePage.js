@@ -1,10 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
+import { Text, Input, Button } from '@rneui/themed';
+import Map from '../components/Map';
 
 const TrackCreatePage = () => {
   return (
-    <View>
-      <Text>TrackCreatePage</Text>
-    </View>
+    <SafeAreaView forceInset={{ top: 'always' }}>
+      <Text h2>Create a Track</Text>
+      <Map />
+    </SafeAreaView>
   );
 };
 

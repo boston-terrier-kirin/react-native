@@ -3,6 +3,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
+import { Provider as LocationProvider } from './src/context/LocationContext';
+
 import ResolveAuthPage from './src/pages/ResolveAuthPage';
 import SigninPage from './src/pages/SigninPage';
 import SignupPage from './src/pages/SignupPage';
@@ -32,8 +34,10 @@ const switchNavigator = createSwitchNavigator({
 const App = createAppContainer(switchNavigator);
 
 export default () => (
-  <AuthProvider>
-    {/* POINT：コンポーネントの外でnavigationを使う */}
-    <App ref={(navigator) => setNavigator(navigator)} />
-  </AuthProvider>
+  <LocationProvider>
+    <AuthProvider>
+      {/* POINT：コンポーネントの外でnavigationを使う */}
+      <App ref={(navigator) => setNavigator(navigator)} />
+    </AuthProvider>
+  </LocationProvider>
 );

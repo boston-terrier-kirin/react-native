@@ -1,57 +1,44 @@
-import { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
-import { Text, Input, Button } from '@rneui/themed';
-import {
-  requestForegroundPermissionsAsync,
-  watchPositionAsync,
-  Accuracy,
-} from 'expo-location';
+import { useContext, useCallback } from 'react';
+import { StyleSheet } from 'react-native';
+import { SafeAreaView, withNavigationFocus } from 'react-navigation';
+import { Text } from '@rneui/themed';
+import useLocation from '../hooks/useLocation';
+import TrackForm from '../components/TrackForm';
+import { basicStyle } from '../components/Styles';
 
 import { Context as LocationContext } from '../context/LocationContext';
 import Map from '../components/Map';
 
 // import '../_mockLocation';
 
-const TrackCreatePage = () => {
-  const [err, setErr] = useState(null);
-  const { addLocation } = useContext(LocationContext);
+const TrackCreatePage = ({ isFocused }) => {
+  const { state, addLocation } = useContext(LocationContext);
 
-  const startWatching = async () => {
-    try {
-      const { granted } = await requestForegroundPermissionsAsync();
-      if (!granted) {
-        throw new Error('Location permission not granted');
-      }
+  const fn = useCallback(
+    (location) => {
+      addLocation(location, state.recording);
+    },
+    [state.recording]
+  );
 
-      await watchPositionAsync(
-        {
-          accuracy: Accuracy.BestForNavigation,
-          timeInterval: 1000,
-          distanceInterval: 10,
-        },
-        (location) => {
-          addLocation(location);
-        }
-      );
-    } catch (e) {
-      setErr(e);
-    }
-  };
-
-  useEffect(() => {
-    startWatching();
-  }, []);
+  const { err } = useLocation(isFocused || state.recording, fn);
 
   return (
-    <SafeAreaView forceInset={{ top: 'always' }}>
-      <Text h2>Create a Track</Text>
+    <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
+      <Text h2 style={basicStyle.mb1}>
+        Create a Track
+      </Text>
       <Map />
       {err && <Text>Please enable location service</Text>}
+      <TrackForm />
     </SafeAreaView>
   );
 };
 
-export default TrackCreatePage;
+export default withNavigationFocus(TrackCreatePage);
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
+});

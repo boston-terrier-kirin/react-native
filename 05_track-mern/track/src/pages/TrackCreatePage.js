@@ -9,7 +9,7 @@ import { basicStyle } from '../components/Styles';
 import { Context as LocationContext } from '../context/LocationContext';
 import Map from '../components/Map';
 
-// import '../_mockLocation';
+import '../_mockLocation';
 
 const TrackCreatePage = ({ isFocused }) => {
   const { state, addLocation } = useContext(LocationContext);

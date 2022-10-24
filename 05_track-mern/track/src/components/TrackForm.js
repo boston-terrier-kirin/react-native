@@ -9,7 +9,7 @@ const TrackForm = () => {
     useContext(LocationContext);
   const { name, recording, locations } = state;
 
-  console.log(locations.length);
+  console.log(recording, locations.length);
 
   return (
     <View>
@@ -26,6 +26,10 @@ const TrackForm = () => {
       ) : (
         <Button title="Start Recording" onPress={startRecording} />
       )}
+
+      {!recording && locations.length > 0 ? (
+        <Button style={basicStyle.mt1} title="Save Recording" />
+      ) : null}
     </View>
   );
 };

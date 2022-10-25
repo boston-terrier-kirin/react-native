@@ -1,6 +1,7 @@
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { FontAwesome } from '@expo/vector-icons';
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as LocationProvider } from './src/context/LocationContext';
@@ -16,6 +17,18 @@ import TrackDetailPage from './src/pages/TrackDetailPage';
 
 import { setNavigator } from './src/navigationRef';
 
+const trackListFlow = createStackNavigator({
+  TrackList: TrackListPage,
+  TrackDetail: TrackDetailPage,
+});
+
+trackListFlow.navigationOptions = () => {
+  return {
+    title: 'Tracks',
+    tabBarIcon: <FontAwesome name="th-list" size={20} />,
+  };
+};
+
 const switchNavigator = createSwitchNavigator({
   resolveAuth: ResolveAuthPage,
   authFlow: createStackNavigator({
@@ -23,10 +36,7 @@ const switchNavigator = createSwitchNavigator({
     Signin: SigninPage,
   }),
   mainFlow: createBottomTabNavigator({
-    trackListFlow: createStackNavigator({
-      TrackList: TrackListPage,
-      TrackDetail: TrackDetailPage,
-    }),
+    trackListFlow: trackListFlow,
     TrackCreate: TrackCreatePage,
     Account: AccountPage,
   }),

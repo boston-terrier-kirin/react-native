@@ -5,13 +5,18 @@ const initialState = [];
 
 const trackReducer = (state, action) => {
   switch (action.type) {
+    case 'FETCH_TRACKS':
+      return action.payload;
     default:
       return state;
   }
 };
 
 const fetchTracks = (dispatch) => {
-  return () => {};
+  return async () => {
+    const res = await trackerApi.get('/tracks');
+    dispatch({ type: 'FETCH_TRACKS', payload: res.data });
+  };
 };
 
 const createTrack = (dispatch) => {

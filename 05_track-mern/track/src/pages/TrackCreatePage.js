@@ -1,6 +1,7 @@
 import { useContext, useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView, withNavigationFocus } from 'react-navigation';
+import { FontAwesome } from '@expo/vector-icons';
 import { Text } from '@rneui/themed';
 import useLocation from '../hooks/useLocation';
 import TrackForm from '../components/TrackForm';
@@ -9,7 +10,7 @@ import { basicStyle } from '../components/Styles';
 import { Context as LocationContext } from '../context/LocationContext';
 import Map from '../components/Map';
 
-// import '../_mockLocation';
+import '../_mockLocation';
 
 const TrackCreatePage = ({ isFocused }) => {
   const { state, addLocation } = useContext(LocationContext);
@@ -33,6 +34,13 @@ const TrackCreatePage = ({ isFocused }) => {
       <TrackForm />
     </SafeAreaView>
   );
+};
+
+TrackCreatePage.navigationOptions = () => {
+  return {
+    title: 'Add Track',
+    tabBarIcon: <FontAwesome name="plus" size={20} />,
+  };
 };
 
 export default withNavigationFocus(TrackCreatePage);
